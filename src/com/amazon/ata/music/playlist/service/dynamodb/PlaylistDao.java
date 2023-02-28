@@ -35,4 +35,8 @@ public class PlaylistDao {
 
         return playlist;
     }
+
+//    public savePlaylist(Playlist playlist) {
+//        // store Playlist in DynamoDB
+//    }
 }

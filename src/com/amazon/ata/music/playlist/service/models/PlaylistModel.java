@@ -1,7 +1,9 @@
 package com.amazon.ata.music.playlist.service.models;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 public class PlaylistModel {
     private String id;
@@ -58,8 +60,11 @@ public class PlaylistModel {
         return tags;
     }
 
-    public void setTags(List<String> tags) {
-        this.tags = tags;
+    public void setTags(Set<String> tagSet) {
+        this.tags = new ArrayList<>();
+        for (String tag : tagSet) {
+            tags.add(tag);
+        }
     }
 
     @Override

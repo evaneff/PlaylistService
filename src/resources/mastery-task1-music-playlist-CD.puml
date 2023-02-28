@@ -1,1 +1,70 @@
-PARTICIPANTS: use this file for creating the class diagram in mastery task 01
+@startuml
+class AddSongToPlaylistActivity {
+- playlistDao : PlaylistDao
+- albumTrackDao : AlbumTrackDao
++ handleRequest(AddSongToPlaylistRequest, Context) : AddSongToPlaylistResult
+}
+class CreatePlaylistActivity {
+- playlistDao : PlaylistDao
++ handleRequest(CreatePlaylistRequest, Context) : CreatePlaylistResult
+}
+class GetPlaylistActivity {
+- playlistDao : PlaylistDao
++ handleRequest(GetPlaylistRequest, Context) : GetPlaylistResult
+}
+class GetPlaylistSongsActivity {
+- playlistDao : PlaylistDao
++ handleRequest(GetPlaylistSongsRequest, Context) : GetPlaylistSongsResult
+}
+class UpdatePlaylistActivity {
+- playlistDao : PlaylistDao
++ handleRequest(UpdatePlaylistRequest, Context) : UpdatePlaylistResult
+}
+class AlbumTrackDao {
+- dynamoDbMapper : DynamoDBMapper
+}
+class PlaylistDao {
+- dynamoDbMapper : DynamoDBMapper
++ getPlaylist(String) : Playlist
+}
+class AlbumTrackNotFoundException {
+- serialVersionUID : long
+}
+class InvalidAttributeValueException {
+- serialVersionUID : long
+}
+class PlaylistNotFoundException {
+- serialVersionUID : long
+}
+class AlbumTrack {
+- @DynamoDBHashKey asin : String
+- @DynamoDBRangeKey trackNumber :  Integer
+- albumName : String
+- songTitle : String
+
+}
+class Playlist {
+
+- @DynamoDBHashKey id : String
+- name : String
+- customerId : String
+- songCount : Integer
+- tags : Set<String>
+- songList : List<AlbumTrack>
+
++ getId()
++ setId()
++ getSongList()
++ setSongList()
+}
+PlaylistDao -- CreatePlaylistActivity
+PlaylistDao -- UpdatePlaylistActivity
+PlaylistDao -- GetPlaylistSongsActivity
+PlaylistDao -- GetPlaylistActivity
+PlaylistDao -- AddSongToPlaylistActivity
+
+AddSongToPlaylistActivity -- AlbumTrackDao
+
+Playlist -- AlbumTrack
+
+@enduml
