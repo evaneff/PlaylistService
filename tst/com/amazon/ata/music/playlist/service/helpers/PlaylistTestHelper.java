@@ -23,7 +23,7 @@ public final class PlaylistTestHelper {
         playlist.setName("a playlist");
         playlist.setCustomerId("CustomerABC");
         //playlist.setTags(Collections.singleton("tag"));
-        List<String> tags = playlist.getTags();
+        List<String> tags = new ArrayList<>();
         tags.add("tag");
         playlist.setTags(tags);
         List<AlbumTrack> albumTracks = new LinkedList<>();

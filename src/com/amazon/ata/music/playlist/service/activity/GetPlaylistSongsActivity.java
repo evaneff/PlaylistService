@@ -52,25 +52,23 @@ public class GetPlaylistSongsActivity implements RequestHandler<GetPlaylistSongs
     public GetPlaylistSongsResult handleRequest(final GetPlaylistSongsRequest getPlaylistSongsRequest, Context context) {
         log.info("Received GetPlaylistSongsRequest {}", getPlaylistSongsRequest);
         //getPlaylist(id)
-        String requestedId = getPlaylistSongsRequest.getId();
+        Playlist playlist = playlistDao.getPlaylist(getPlaylistSongsRequest.getId());
         //throw playlistNotFoundException
-        if (requestedId == null) {
+        if (playlist == null) {
             throw new PlaylistNotFoundException();
         }
-        Playlist playlist = playlistDao.getPlaylist(requestedId);
-
         // shuffle
         // store songmodel in list
         List<SongModel> list = new ArrayList<>();
         // for each song in song list
         for (AlbumTrack song : playlist.getSongList()) {
             // create songmodel
-            SongModel songModel = new ModelConverter().toSongModel(song);
+            SongModel songModel = new SongModel();
             // set song model fields with albumTrack data
-//            songModel.setAsin(song.getAsin());
-//            songModel.setAlbum(song.getAlbumName());
-//            songModel.setTrackNumber(song.getTrackNumber());
-//            songModel.setTitle(song.getSongTitle());
+            songModel.setAsin(song.getAsin());
+            songModel.setAlbum(song.getAlbumName());
+            songModel.setTrackNumber(song.getTrackNumber());
+            songModel.setTitle(song.getSongTitle());
             list.add(songModel);
         }
 

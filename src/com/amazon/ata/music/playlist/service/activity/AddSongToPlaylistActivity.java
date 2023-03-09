@@ -61,37 +61,42 @@ public class AddSongToPlaylistActivity implements RequestHandler<AddSongToPlayli
     @Override
     public AddSongToPlaylistResult handleRequest(final AddSongToPlaylistRequest addSongToPlaylistRequest, Context context) {
         log.info("Received AddSongToPlaylistRequest {} ", addSongToPlaylistRequest);
-        String requestedId = addSongToPlaylistRequest.getId();
+
+        //getPlayList(ID)
+        Playlist playlist = playlistDao.getPlaylist(addSongToPlaylistRequest.getId());
+
         //throw playlist not found exception
-        if (requestedId == null) {
+        if (playlist == null) {
             throw new PlaylistNotFoundException();
         }
-        //getPlayList(ID)
-        Playlist playlist = playlistDao.getPlaylist(requestedId);
-
         //getAlbumTrack(asin, track number)
         AlbumTrack albumTrack = albumTrackDao.getAlbumTrack(addSongToPlaylistRequest.getAsin(), addSongToPlaylistRequest.getTrackNumber());
         //throw albumTrackNotFoundException
-        if (addSongToPlaylistRequest.getAsin() == null) {
+        if (albumTrack == null) {
             throw new AlbumTrackNotFoundException();
         }
         //queNext (don't do this yet)
+
+        // add song to back of playlist
+        List<AlbumTrack> list = playlist.getSongList();
+        list.add(albumTrack);
         // update Playlist song count
         playlist.setSongCount(playlist.getSongCount() + 1);
+        playlist.setSongList(list);
         // savePlaylist(playlist)
         playlistDao.savePlaylist(playlist);
         // loop for each song in playlist
         //Store SongModel in list
-        List<SongModel> list = new ArrayList<>();
+        List<SongModel> modelList = new ArrayList<>();
         for (AlbumTrack song : playlist.getSongList()) {
             // create songModel
-            SongModel songModel = new ModelConverter().toSongModel(song);
+            SongModel songModel = new SongModel();
             //SetSongModel fields with AlbumTrack data
-//            songModel.setAsin(song.getAsin());
-//            songModel.setAlbum(song.getAlbumName());
-//            songModel.setTrackNumber(song.getTrackNumber());
-//            songModel.setTitle(song.getSongTitle());
-            list.add(songModel);
+            songModel.setAsin(song.getAsin());
+            songModel.setAlbum(song.getAlbumName());
+            songModel.setTrackNumber(song.getTrackNumber());
+            songModel.setTitle(song.getSongTitle());
+            modelList.add(songModel);
         }
 
         // create addSongToPlaylistResult
@@ -99,7 +104,7 @@ public class AddSongToPlaylistActivity implements RequestHandler<AddSongToPlayli
         // return addSongToPlaylistResult
 
         return AddSongToPlaylistResult.builder()
-                .withSongList(list)
+                .withSongList(modelList)
                 //.withSongList(Collections.singletonList(new SongModel()))
                 .build();
     }
