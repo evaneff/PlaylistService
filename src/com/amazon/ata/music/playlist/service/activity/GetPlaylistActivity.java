@@ -1,5 +1,6 @@
 package com.amazon.ata.music.playlist.service.activity;
 
+import com.amazon.ata.aws.dynamodb.DynamoDbClientProvider;
 import com.amazon.ata.music.playlist.service.models.requests.GetPlaylistRequest;
 import com.amazon.ata.music.playlist.service.models.results.GetPlaylistResult;
 import com.amazon.ata.music.playlist.service.models.PlaylistModel;
@@ -7,10 +8,14 @@ import com.amazon.ata.music.playlist.service.converters.ModelConverter;
 import com.amazon.ata.music.playlist.service.dynamodb.PlaylistDao;
 import com.amazon.ata.music.playlist.service.dynamodb.models.Playlist;
 
+import com.amazonaws.regions.Regions;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import javax.inject.Inject;
 
 /**
  * Implementation of the GetPlaylistActivity for the MusicPlaylistService's GetPlaylist API.
@@ -26,11 +31,16 @@ public class GetPlaylistActivity implements RequestHandler<GetPlaylistRequest, G
      *
      * @param playlistDao PlaylistDao to access the playlist table.
      */
-    public GetPlaylistActivity(PlaylistDao playlistDao) {
-        this.playlistDao = playlistDao;
-    }
 
-    /**
+//    public GetPlaylistActivity(PlaylistDao playlistDao) {
+//        this.playlistDao = playlistDao;
+//    }
+
+    @Inject
+    public GetPlaylistActivity() {
+        playlistDao = new PlaylistDao(new DynamoDBMapper(DynamoDbClientProvider.getDynamoDBClient(Regions.US_WEST_2)));
+    }
+        /**
      * This method handles the incoming request by retrieving the playlist from the database.
      * <p>
      * It then returns the playlist.

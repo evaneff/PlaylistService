@@ -1,14 +1,26 @@
 package com.amazon.ata.music.playlist.service.activity;
 
+import com.amazon.ata.aws.dynamodb.DynamoDbClientProvider;
+import com.amazon.ata.music.playlist.service.converters.ModelConverter;
+import com.amazon.ata.music.playlist.service.dynamodb.models.Playlist;
+import com.amazon.ata.music.playlist.service.exceptions.InvalidAttributeChangeException;
+import com.amazon.ata.music.playlist.service.exceptions.InvalidAttributeValueException;
+import com.amazon.ata.music.playlist.service.exceptions.PlaylistNotFoundException;
 import com.amazon.ata.music.playlist.service.models.PlaylistModel;
 import com.amazon.ata.music.playlist.service.models.requests.UpdatePlaylistRequest;
 import com.amazon.ata.music.playlist.service.models.results.UpdatePlaylistResult;
 import com.amazon.ata.music.playlist.service.dynamodb.PlaylistDao;
 
+import com.amazonaws.regions.Regions;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import javax.inject.Inject;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Implementation of the UpdatePlaylistActivity for the MusicPlaylistService's UpdatePlaylist API.
@@ -22,10 +34,16 @@ public class UpdatePlaylistActivity implements RequestHandler<UpdatePlaylistRequ
     /**
      * Instantiates a new UpdatePlaylistActivity object.
      *
-     * @param playlistDao PlaylistDao to access the playlist table.
+//     * @param playlistDao PlaylistDao to access the playlist table.
      */
-    public UpdatePlaylistActivity(PlaylistDao playlistDao) {
-        this.playlistDao = playlistDao;
+//    @Inject
+//    public UpdatePlaylistActivity(PlaylistDao playlistDao) {
+//        this.playlistDao = playlistDao;
+//    }
+
+    @Inject
+    public UpdatePlaylistActivity() {
+        playlistDao = new PlaylistDao(new DynamoDBMapper(DynamoDbClientProvider.getDynamoDBClient(Regions.US_WEST_2)));
     }
 
     /**
@@ -49,9 +67,42 @@ public class UpdatePlaylistActivity implements RequestHandler<UpdatePlaylistRequ
     @Override
     public UpdatePlaylistResult handleRequest(final UpdatePlaylistRequest updatePlaylistRequest, Context context) {
         log.info("Received UpdatePlaylistRequest {}", updatePlaylistRequest);
+        //validate playlist name from request
+
+        //getPlaylist(id)
+        Playlist playlist = playlistDao.getPlaylist(updatePlaylistRequest.getId());
+        //if playlist does not exist, throw PlaylistNotFoundException
+        if (playlist == null) {
+            throw new PlaylistNotFoundException();
+        }
+        //if request tries to update the customer ID, throw InvalidAttributeChangeException
+        if (!updatePlaylistRequest.getCustomerId().equals(playlist.getCustomerId())) {
+            throw new InvalidAttributeChangeException();
+        }
+        Pattern pattern = Pattern.compile("[\"'/]");
+        Matcher matcher1 = pattern.matcher(updatePlaylistRequest.getName());
+        Matcher matcher2 = pattern.matcher(updatePlaylistRequest.getCustomerId());
+        //if playlist has name or customer ID with invalid characters, throw InvalidAttributeValueException
+        if (matcher1.find() || matcher2.find()) {
+            throw new InvalidAttributeValueException();
+        }
+        //update playlist
+        playlist.setName(updatePlaylistRequest.getName());
+        playlist.setId(updatePlaylistRequest.getId());
+        //save playlist
+        playlistDao.savePlaylist(playlist);
+        //create PlaylistModel
+        PlaylistModel playlistModel = new ModelConverter().toPlaylistModel(playlist);
+            //PlaylistModel playlistModel = new PlaylistModel();
+        //set PlaylistModel with saved playlist data
+//        playlistModel.setName(playlist.getName());
+//        playlistModel.setId(playlist.getId());
+//        playlistModel.setCustomerId(playlist.getCustomerId());
+        //create UpdatePlaylistResponse
+        //Set PlaylistModel field in UpdatePlaylist Response
 
         return UpdatePlaylistResult.builder()
-                .withPlaylist(new PlaylistModel())
+                .withPlaylist(playlistModel)
                 .build();
     }
 }

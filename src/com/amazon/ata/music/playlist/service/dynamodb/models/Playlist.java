@@ -21,7 +21,7 @@ public class Playlist {
     private String name;
     private String customerId;
     private int songCount;
-    private Set<String> tags;
+    private List<String> tags;
     private List<AlbumTrack> songList;
 
     @DynamoDBHashKey(attributeName = "id")
@@ -55,7 +55,7 @@ public class Playlist {
         }
         return list; }
 
-    public void setTags(Set<String> tags) {
+    public void setTags(List<String> tags) {
         this.tags = tags;
 
         }

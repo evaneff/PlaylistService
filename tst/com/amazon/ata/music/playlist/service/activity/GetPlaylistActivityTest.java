@@ -25,7 +25,7 @@ public class GetPlaylistActivityTest {
     @BeforeEach
     public void setUp() {
         initMocks(this);
-        getPlaylistActivity = new GetPlaylistActivity(playlistDao);
+        getPlaylistActivity = new GetPlaylistActivity();
     }
 
     @Test
@@ -42,7 +42,7 @@ public class GetPlaylistActivityTest {
         playlist.setName(expectedName);
         playlist.setCustomerId(expectedCustomerId);
         playlist.setSongCount(expectedSongCount);
-        playlist.setTags(Sets.newHashSet(expectedTags));
+        playlist.setTags(expectedTags);
 
         when(playlistDao.getPlaylist(expectedId)).thenReturn(playlist);
 

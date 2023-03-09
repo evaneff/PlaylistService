@@ -30,12 +30,17 @@ class PlaylistDao {
 class AlbumTrackNotFoundException {
 - serialVersionUID : long
 }
-class InvalidAttributeValueException {
-- serialVersionUID : long
-}
 class PlaylistNotFoundException {
 - serialVersionUID : long
 }
+class InvalidAttributeException {
+}
+class InvalidAttributeValueException {
+- serialVersionUID : long
+}
+class InvalidAttributeChangeException {
+}
+
 class AlbumTrack {
 - @DynamoDBHashKey asin : String
 - @DynamoDBRangeKey trackNumber :  Integer
@@ -62,6 +67,9 @@ PlaylistDao -- UpdatePlaylistActivity
 PlaylistDao -- GetPlaylistSongsActivity
 PlaylistDao -- GetPlaylistActivity
 PlaylistDao -- AddSongToPlaylistActivity
+
+InvalidAttributeException <|-- InvalidAttributeChangeException
+InvalidAttributeException <|-- InvalidAttributeValueException
 
 AddSongToPlaylistActivity -- AlbumTrackDao
 

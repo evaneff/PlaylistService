@@ -19,8 +19,16 @@ public class AlbumTrack {
     @DynamoDBHashKey(attributeName = "asin")
     public String getAsin() { return asin; }
 
+    public void setAsin(String asin) {
+        this.asin = asin;
+    }
+
     @DynamoDBRangeKey(attributeName = "trackNumber")
     public int getTrackNumber() { return trackNumber; }
+
+    public void setTrackNumber(int trackNumber) {
+        this.trackNumber = trackNumber;
+    }
 
     @DynamoDBAttribute(attributeName = "album_name")
     public String getAlbumName() {
