@@ -1,14 +1,18 @@
 package com.amazon.ata.music.playlist.service.activity;
 
+import com.amazon.ata.aws.dynamodb.DynamoDbClientProvider;
 import com.amazon.ata.music.playlist.service.converters.ModelConverter;
 import com.amazon.ata.music.playlist.service.dynamodb.models.AlbumTrack;
 import com.amazon.ata.music.playlist.service.dynamodb.models.Playlist;
 import com.amazon.ata.music.playlist.service.exceptions.PlaylistNotFoundException;
+import com.amazon.ata.music.playlist.service.models.SongOrder;
 import com.amazon.ata.music.playlist.service.models.requests.GetPlaylistSongsRequest;
 import com.amazon.ata.music.playlist.service.models.results.GetPlaylistSongsResult;
 import com.amazon.ata.music.playlist.service.models.SongModel;
 import com.amazon.ata.music.playlist.service.dynamodb.PlaylistDao;
 
+import com.amazonaws.regions.Regions;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import org.apache.logging.log4j.LogManager;
@@ -37,6 +41,10 @@ public class GetPlaylistSongsActivity implements RequestHandler<GetPlaylistSongs
     public GetPlaylistSongsActivity(PlaylistDao playlistDao) {
         this.playlistDao = playlistDao;
     }
+//    @Inject
+//    public GetPlaylistSongsActivity() {
+//        playlistDao = new PlaylistDao(new DynamoDBMapper(DynamoDbClientProvider.getDynamoDBClient(Regions.US_WEST_2)));
+//    }
 
     /**
      * This method handles the incoming request by retrieving the playlist from the database.
@@ -57,12 +65,13 @@ public class GetPlaylistSongsActivity implements RequestHandler<GetPlaylistSongs
         if (playlist == null) {
             throw new PlaylistNotFoundException();
         }
-        // shuffle
-        // store songmodel in list
+
+        // default
+        // store songModel in list
         List<SongModel> list = new ArrayList<>();
         // for each song in song list
         for (AlbumTrack song : playlist.getSongList()) {
-            // create songmodel
+            // create songModel
             SongModel songModel = new SongModel();
             // set song model fields with albumTrack data
             songModel.setAsin(song.getAsin());
@@ -71,10 +80,17 @@ public class GetPlaylistSongsActivity implements RequestHandler<GetPlaylistSongs
             songModel.setTitle(song.getSongTitle());
             list.add(songModel);
         }
+        // shuffle
+        if (getPlaylistSongsRequest.getOrder() == SongOrder.SHUFFLED) {
+            Collections.shuffle(list);
+        }
+        // reversed
+        if (getPlaylistSongsRequest.getOrder() == SongOrder.REVERSED) {
+            Collections.reverse(list);
+        }
 
-
-        //create getplaylist song result and set songmodle list
-        //return getplaylistsongresult
+        //create getPlaylist song result and set songModel list
+        //return getPlaylistSongResult
         return GetPlaylistSongsResult.builder()
                 .withSongList(list)
                 .build();

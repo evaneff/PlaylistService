@@ -19,6 +19,7 @@ import org.apache.logging.log4j.Logger;
 import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -75,11 +76,18 @@ public class AddSongToPlaylistActivity implements RequestHandler<AddSongToPlayli
         if (albumTrack == null) {
             throw new AlbumTrackNotFoundException();
         }
-        //queNext (don't do this yet)
-
-        // add song to back of playlist
         List<AlbumTrack> list = playlist.getSongList();
-        list.add(albumTrack);
+        //queNext if queueNext parameter is provided and is true
+        if (addSongToPlaylistRequest.isQueueNext()) {
+            // cast to LinkedList
+            //add to the front of the playlist (addFirst)
+            ((LinkedList) list).addFirst(albumTrack);
+        } else {
+            // else add song to back of playlist
+            list.add(albumTrack);
+        }
+
+
         // update Playlist song count
         playlist.setSongCount(playlist.getSongCount() + 1);
         playlist.setSongList(list);
