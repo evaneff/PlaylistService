@@ -10,22 +10,11 @@ import com.amazonaws.services.lambda.runtime.RequestHandler;
 public class UpdatePlaylistActivityProvider implements RequestHandler<UpdatePlaylistRequest, UpdatePlaylistResult> {
 
 
-    public UpdatePlaylistActivityProvider() {
-
-    }
-
     @Override
     public UpdatePlaylistResult handleRequest(final UpdatePlaylistRequest updatePlaylistRequest, Context context) {
         return daggerServiceComponent().provideUpdatePlaylistActivity().handleRequest(updatePlaylistRequest, context);
     }
 
-//    private App getApp() {
-//        if (app == null) {
-//            app = new App();
-//        }
-//
-//        return app;
-//    }
     public ServiceComponent daggerServiceComponent() {
     ServiceComponent dagger = DaggerServiceComponent.create();
         return dagger;

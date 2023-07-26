@@ -10,21 +10,11 @@ import com.amazonaws.services.lambda.runtime.RequestHandler;
 public class GetPlaylistActivityProvider implements RequestHandler<GetPlaylistRequest, GetPlaylistResult> {
 
 
-    public GetPlaylistActivityProvider() {
-
-    }
-
     @Override
     public GetPlaylistResult handleRequest(final GetPlaylistRequest getPlaylistRequest, Context context) {
         return daggerServiceComponent().provideGetPlaylistActivity().handleRequest(getPlaylistRequest, context);
     }
 
-//    private App getApp() {
-//        if (app == null) {
-//            app = new App();
-//        }
-//        return app;
-//    }
     public ServiceComponent daggerServiceComponent() {
         ServiceComponent dagger = DaggerServiceComponent.create();
         return dagger;

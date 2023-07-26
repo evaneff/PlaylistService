@@ -36,10 +36,6 @@ public class UpdatePlaylistActivity implements RequestHandler<UpdatePlaylistRequ
      *
 //     * @param playlistDao PlaylistDao to access the playlist table.
      */
-//    @Inject
-//    public UpdatePlaylistActivity(PlaylistDao playlistDao) {
-//        this.playlistDao = playlistDao;
-//    }
 
     @Inject
     public UpdatePlaylistActivity() {
@@ -93,13 +89,6 @@ public class UpdatePlaylistActivity implements RequestHandler<UpdatePlaylistRequ
         playlistDao.savePlaylist(playlist);
         //create PlaylistModel
         PlaylistModel playlistModel = new ModelConverter().toPlaylistModel(playlist);
-            //PlaylistModel playlistModel = new PlaylistModel();
-        //set PlaylistModel with saved playlist data
-//        playlistModel.setName(playlist.getName());
-//        playlistModel.setId(playlist.getId());
-//        playlistModel.setCustomerId(playlist.getCustomerId());
-        //create UpdatePlaylistResponse
-        //Set PlaylistModel field in UpdatePlaylist Response
 
         return UpdatePlaylistResult.builder()
                 .withPlaylist(playlistModel)

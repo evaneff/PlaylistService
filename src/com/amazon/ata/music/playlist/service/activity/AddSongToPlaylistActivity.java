@@ -18,7 +18,6 @@ import org.apache.logging.log4j.Logger;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -87,7 +86,6 @@ public class AddSongToPlaylistActivity implements RequestHandler<AddSongToPlayli
             list.add(albumTrack);
         }
 
-
         // update Playlist song count
         playlist.setSongCount(playlist.getSongCount() + 1);
         playlist.setSongList(list);
@@ -98,13 +96,9 @@ public class AddSongToPlaylistActivity implements RequestHandler<AddSongToPlayli
         List<SongModel> modelList = new ArrayList<>();
         for (AlbumTrack song : playlist.getSongList()) {
             // create songModel
-            SongModel songModel = new SongModel();
-            //SetSongModel fields with AlbumTrack data
-            songModel.setAsin(song.getAsin());
-            songModel.setAlbum(song.getAlbumName());
-            songModel.setTrackNumber(song.getTrackNumber());
-            songModel.setTitle(song.getSongTitle());
+            SongModel songModel = new ModelConverter().toSongModel(song);
             modelList.add(songModel);
+
         }
 
         // create addSongToPlaylistResult
@@ -113,7 +107,6 @@ public class AddSongToPlaylistActivity implements RequestHandler<AddSongToPlayli
 
         return AddSongToPlaylistResult.builder()
                 .withSongList(modelList)
-                //.withSongList(Collections.singletonList(new SongModel()))
                 .build();
     }
 }

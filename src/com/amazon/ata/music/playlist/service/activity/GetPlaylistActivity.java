@@ -29,12 +29,7 @@ public class GetPlaylistActivity implements RequestHandler<GetPlaylistRequest, G
     /**
      * Instantiates a new GetPlaylistActivity object.
      *
-     * @param playlistDao PlaylistDao to access the playlist table.
      */
-
-//    public GetPlaylistActivity(PlaylistDao playlistDao) {
-//        this.playlistDao = playlistDao;
-//    }
 
     @Inject
     public GetPlaylistActivity() {

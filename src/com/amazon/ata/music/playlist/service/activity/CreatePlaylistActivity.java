@@ -1,7 +1,6 @@
 package com.amazon.ata.music.playlist.service.activity;
 
 import com.amazon.ata.aws.dynamodb.DynamoDbClientProvider;
-import com.amazon.ata.music.playlist.service.converters.AlbumTrackLinkedListConverter;
 import com.amazon.ata.music.playlist.service.converters.ModelConverter;
 import com.amazon.ata.music.playlist.service.dynamodb.models.Playlist;
 import com.amazon.ata.music.playlist.service.exceptions.InvalidAttributeValueException;
@@ -19,9 +18,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.inject.Inject;
-import java.util.Collections;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+
 
 /**
  * Implementation of the CreatePlaylistActivity for the MusicPlaylistService's CreatePlaylist API.
@@ -37,10 +34,6 @@ public class CreatePlaylistActivity implements RequestHandler<CreatePlaylistRequ
      *
 //     * @param playlistDao PlaylistDao to access the playlists table.
      */
-
-//    public CreatePlaylistActivity(PlaylistDao playlistDao) {
-//        this.playlistDao = playlistDao;
-//    }
 
     @Inject
     public CreatePlaylistActivity() {

@@ -1,7 +1,5 @@
 package com.amazon.ata.music.playlist.service.activity;
 
-import com.amazon.ata.aws.dynamodb.DynamoDbClientProvider;
-import com.amazon.ata.music.playlist.service.converters.ModelConverter;
 import com.amazon.ata.music.playlist.service.dynamodb.models.AlbumTrack;
 import com.amazon.ata.music.playlist.service.dynamodb.models.Playlist;
 import com.amazon.ata.music.playlist.service.exceptions.PlaylistNotFoundException;
@@ -11,8 +9,6 @@ import com.amazon.ata.music.playlist.service.models.results.GetPlaylistSongsResu
 import com.amazon.ata.music.playlist.service.models.SongModel;
 import com.amazon.ata.music.playlist.service.dynamodb.PlaylistDao;
 
-import com.amazonaws.regions.Regions;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import org.apache.logging.log4j.LogManager;
@@ -41,10 +37,6 @@ public class GetPlaylistSongsActivity implements RequestHandler<GetPlaylistSongs
     public GetPlaylistSongsActivity(PlaylistDao playlistDao) {
         this.playlistDao = playlistDao;
     }
-//    @Inject
-//    public GetPlaylistSongsActivity() {
-//        playlistDao = new PlaylistDao(new DynamoDBMapper(DynamoDbClientProvider.getDynamoDBClient(Regions.US_WEST_2)));
-//    }
 
     /**
      * This method handles the incoming request by retrieving the playlist from the database.

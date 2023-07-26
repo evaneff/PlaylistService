@@ -9,23 +9,11 @@ import com.amazonaws.services.lambda.runtime.RequestHandler;
 
 public class AddSongToPlaylistActivityProvider implements RequestHandler<AddSongToPlaylistRequest, AddSongToPlaylistResult> {
 
-
-    public AddSongToPlaylistActivityProvider() {
-
-    }
-
     @Override
     public AddSongToPlaylistResult handleRequest(final AddSongToPlaylistRequest addSongToPlaylistRequest, Context context) {
         return daggerServiceComponent().provideAddSongToPlaylistActivity().handleRequest(addSongToPlaylistRequest, context);
     }
 
-//    private App getApp() {
-//        if (app == null) {
-//            app = new App();
-//        }
-//
-//        return app;
-//    }
     public ServiceComponent daggerServiceComponent() {
     ServiceComponent dagger = DaggerServiceComponent.create();
         return dagger;

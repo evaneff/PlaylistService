@@ -5,8 +5,6 @@ import com.amazon.ata.music.playlist.service.models.PlaylistModel;
 import com.amazon.ata.music.playlist.service.dynamodb.models.Playlist;
 import com.amazon.ata.music.playlist.service.models.SongModel;
 
-import java.util.List;
-
 public class ModelConverter {
     /**
      * Converts a provided {@link Playlist} into a {@link PlaylistModel} representation.
@@ -31,6 +29,4 @@ public class ModelConverter {
                 .build();
     }
 
-//    public List<SongModel> toSongModelList(List<AlbumTrack> songList) {
-//    }
 }
