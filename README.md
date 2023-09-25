@@ -27,7 +27,7 @@ As a customer, I want to retrieve all songs in my playlist, in a provided order 
 
 ## Project Mastery Tasks
 
-### [Mastery Task 1: Finish what we started.](tasks/project-master-tasks/MasteryTask01.md)
+### [Mastery Task 1: Finish what we started.](tasks/project-mastery-tasks/MasteryTask01.md)
 
 ### [Mastery Task 2: Submit to the process](tasks/MasteryTask02.md)
 
