@@ -17,12 +17,12 @@ playlist’s list of songs.
 
 ## Business Requirements
 
-As a customer, I want to create a new, empty playlist with a given name and a list of tags.
-As a customer, I want to retrieve my playlist with a given ID.
-As a customer, I want to update my playlist name.
-As a customer, I want to add a song to the end of my playlist.
-As a customer, I want to add a song to the beginning of my playlist.
-As a customer, I want to retrieve all songs in my playlist, in a provided order (in order, reverse order, shuffled).
+* As a customer, I want to create a new, empty playlist with a given name and a list of tags.
+* As a customer, I want to retrieve my playlist with a given ID.
+* As a customer, I want to update my playlist name.
+* As a customer, I want to add a song to the end of my playlist.
+* As a customer, I want to add a song to the beginning of my playlist.
+* As a customer, I want to retrieve all songs in my playlist, in a provided order (in order, reverse order, shuffled).
 
 
 ## Project Mastery Tasks
