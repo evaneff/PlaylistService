@@ -27,12 +27,16 @@ As a customer, I want to retrieve all songs in my playlist, in a provided order 
 
 ## Project Mastery Tasks
 
-### [Mastery Task 1: Finish what we started.](tasks/project-mastery-tasks/MasteryTask01.md)
+### [Mastery Task 1: Finish What We Started.](tasks/project-mastery-tasks/MasteryTask01.md)
 
-### [Mastery Task 2: Submit to the process](tasks/MasteryTask02.md)
+### [Mastery Task 2: I'll Give You an Exception This Time](tasks/project-mastery-tasks/MasteryTask02.md)
 
-### [Mastery Task 3: Query, query on the wall, don’t load one, get them all!](tasks/MasteryTask03.md)
+### [Mastery Task 3: Implement the Dagger Framework](tasks/project-mastery-tasks/MasteryTask03.md)
 
-### [Mastery Task 4: Make a run(nable) for it](tasks/MasteryTask04.md)
+### [Mastery Task 4: Without Music, Life Would B-flat](tasks/project-mastery-tasks/MasteryTask04.md)
+
+### [Mastery Task 5: Zoom, Enhance](tasks/project-mastery-tasks/MasteryTask05.md)
+
+### [Mastery Task 6: Create an API Gateway](tasks/project-mastery-tasks/MasteryTask06.md)
 
 &nbsp;
